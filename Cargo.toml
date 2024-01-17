@@ -1,16 +1,14 @@
 [package]
-name = "tauri_plugin_screen_lock_status"
+name = "tauri-plugin-screen-lock-status"
 version = "0.0.1"
 authors = [ "ren40" ]
 description = ""
 edition = "2021"
 rust-version = "1.60"
-exclude = ["/examples", "/webview-dist", "/webview-src", "node_modules"]
+exclude = ["/examples"]
 
 [dependencies]
 tauri = { version = "1.5.4" }
-serde = "1.0"
-thiserror = "1.0"
 
 
 [dependencies.windows]

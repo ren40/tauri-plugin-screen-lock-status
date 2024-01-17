@@ -8,7 +8,7 @@ use windows::{
             NOTIFY_FOR_ALL_SESSIONS,
         },
     },
-    Win32::UI::Input::{KeyboardAndMouse::GetActiveWindow, *},
+    Win32::UI::Input::{KeyboardAndMouse::GetActiveWindow},
     Win32::UI::WindowsAndMessaging::*,
 };
 
@@ -23,12 +23,6 @@ use tauri::{
 fn register_session_notification(hwnd: HWND) {
     unsafe {
         let _ = WTSRegisterSessionNotification(hwnd, NOTIFY_FOR_ALL_SESSIONS);
-    }
-}
-
-fn unregister_session_notification(hwnd: HWND) {
-    unsafe {
-        let _ = WTSUnRegisterSessionNotification(hwnd);
     }
 }
 
@@ -69,7 +63,7 @@ pub fn init<R: Runtime>() -> TauriPlugin<R> {
                 None,
                 None,
                 instance,
-                None,
+                std::ptr::null(),
             );
 
             let hwnd = GetActiveWindow();
