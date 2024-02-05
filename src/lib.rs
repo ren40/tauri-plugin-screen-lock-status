@@ -8,7 +8,7 @@ use windows::{
     Win32::System::{
         LibraryLoader::*,
         RemoteDesktop::{
-            WTSRegisterSessionNotification, WTSUnRegisterSessionNotification,
+            WTSRegisterSessionNotification,
             NOTIFY_FOR_ALL_SESSIONS,
         },
     },
@@ -91,7 +91,7 @@ pub fn init<R: Runtime>() -> TauriPlugin<R> {
                 None,
                 None,
                 instance,
-                std::ptr::null(),
+                Some(std::ptr::null()),
             );
 
             let hwnd = GetActiveWindow();
