@@ -8,6 +8,7 @@ rust-version = "1.60"
 exclude = ["/examples"]
 
 [dependencies]
+zbus = "3.14.1"
 tauri = { version = "1.5.4" }
 
 

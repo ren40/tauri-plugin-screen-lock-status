@@ -1,5 +1,5 @@
 #[cfg(target_os = "linux")]
-mod linux;
+use zbus::{blocking::Connection, dbus_proxy};
 
 #[cfg(target_os = "windows")]
 use windows::{
@@ -16,6 +16,7 @@ use windows::{
     Win32::UI::WindowsAndMessaging::*,
 };
 
+
 use std::sync::OnceLock;
 use std::thread;
 use std::time::Duration;
@@ -24,9 +25,31 @@ use tauri::{
     Manager, Runtime, Window,
 };
 
+//auto gen code
+#[dbus_proxy(
+    interface = "org.freedesktop.login1.Session",
+    default_service = "org.freedesktop.login1",
+    default_path = "/org/freedesktop/login1/session/auto"
+)]
+trait Session {
+    /// LockedHint property
+    #[dbus_proxy(property)]
+    fn locked_hint(&self) -> zbus::Result<bool>;
+}
+
+#[cfg(target_os = "windows")]
 fn register_session_notification(hwnd: HWND) {
     unsafe {
         let _ = WTSRegisterSessionNotification(hwnd, NOTIFY_FOR_ALL_SESSIONS);
+    }
+}
+
+#[cfg(target_os = "windows")]
+extern "system" fn wndproc(window: HWND, message: u32, wparam: WPARAM, lparam: LPARAM) -> LRESULT {
+    unsafe {
+        match message as u32 {
+            _ => DefWindowProcA(window, message, wparam, lparam),
+        }
     }
 }
 
@@ -99,18 +122,54 @@ pub fn init<R: Runtime>() -> TauriPlugin<R> {
                         _ => {}
                     }
                 }
+                thread::sleep(Duration::from_millis(1000));
             }
-            thread::sleep(Duration::from_millis(100));
+        });
+    }
+
+    #[cfg(target_os = "linux")]
+    {
+        thread::spawn(move || {
+            let mut flg = false;
+            loop {
+                let conn = Connection::system().unwrap();
+                let proxy = SessionProxyBlocking::new(&conn).unwrap();
+
+                let mut property = proxy.receive_locked_hint_changed();
+
+                match property.next() {
+                    Some(pro) => {
+                        let current_property = pro.get().unwrap();
+                        if flg != current_property {
+                            flg = current_property;
+
+                            let window = WINDOW_TAURI.get();
+
+                            match window {
+                                Some(_) => {
+                                    if flg == true {
+                                        let _ = window.expect("Error get WINDOW_TAURI").emit_all(
+                                            "windows_screen_lock_status://change_session_status",
+                                            "lock",
+                                        );
+                                        println!("Locked");
+                                    } else {
+                                        let _ = window.expect("Error get WINDOW_TAURI").emit_all(
+                                            "windows_screen_lock_status://change_session_status",
+                                            "unlock",
+                                        );
+                                        println!("Unlocked");
+                                    }
+                                }
+                                None => break,
+                            }
+                        }
+                    }
+                    None => break,
+                }
+                thread::sleep(Duration::from_millis(1000));
+            }
         });
     }
     Builder::new("windows_screen_lock_status").build()
-}
-
-#[cfg(target_os = "windows")]
-extern "system" fn wndproc(window: HWND, message: u32, wparam: WPARAM, lparam: LPARAM) -> LRESULT {
-    unsafe {
-        match message as u32 {
-            _ => DefWindowProcA(window, message, wparam, lparam),
-        }
-    }
 }
