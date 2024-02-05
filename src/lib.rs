@@ -26,6 +26,7 @@ use tauri::{
 };
 
 //auto gen code
+#[cfg(target_os = "linux")]
 #[dbus_proxy(
     interface = "org.freedesktop.login1.Session",
     default_service = "org.freedesktop.login1",
