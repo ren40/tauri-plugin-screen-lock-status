@@ -1,1 +1,13 @@
-# Tauri Plugin screen_lock_status
+<h1 align="center">Плагин Tauri для отслеживания блокировки сессии</h1>
+---
+
+
+## Использование
+
+
+## ОС
+| Название ОС | Статус | 
+| ----------  | ------ | 
+| Windows     | [Ok]   | 
+| Linux       | [Ok]   | 
+| Unix        | [No]   |
