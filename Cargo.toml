@@ -4,6 +4,7 @@ version = "0.0.1"
 authors = [ "ren40" ]
 description = "This plugin helps track the lock status for the current session"
 edition = "2021"
+license = "Apache-2.0"
 readme = "README.md"
 rust-version = "1.60"
 exclude = ["/examples"]
