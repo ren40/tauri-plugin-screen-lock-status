@@ -1,18 +1,18 @@
 <h1 align="center" id="rus">Плагин для отслеживания блокировки сессии |<a href="#eng">eng</a>|</h1>
 
-Данный плагин помогает отслеживать статус блокировки для текущей сессии. Реализован на таких технологиях как `WinAPI` и `DBUS`. Текущая версия плагина подходит для `Tauri 1.5.4`.
+Данный плагин помогает отслеживать статус блокировки для текущей сессии.  Текущая версия плагина подходит для `Tauri 1.5.4`.
 
-## Использование
+## Установка
 
-Для работы нужно сначала подключить в проект плагин
-Для этого нужно добавить строки в `src-tauri/Cargo.toml`:
+[ 1 ] Для начала работы нужно подключить в проект плагин
+[ 2 ] Для этого в `src-tauri/Cargo.toml` добавить:
 
 ```toml
 [dependencies]
   tauri-plugin-screen-lock-status = { git = "https://github.com/ren40/tauri-plugin-screen-lock-status" }
 ```
 
-Далее подключаем в исполняемом файле `src-tauri/src/main.rc`:
+[ 3 ] Далее в исполняемом файле `src-tauri/src/main.rc` подключаем:
 
 ```Rust
 //main.rc
@@ -27,7 +27,7 @@ fn main() {
 }
 ```
 
-Событие изменения статуса прослушиваются по каналу `window_screen_lock_status://change_session_status`. Для прослушивания надо подключить следующий код:
+[ 4 ] Для прослушивания надо подключить следующий код:
 
 ```JS
 import { listen } from '@tauri-apps/api/event'
@@ -36,6 +36,8 @@ await listen("window_screen_lock_status://change_session_status", (result) => {
     console.log(`[${new Date().toLocaleString()} ${result.payload}]`)
   })
 ```
+
+[ 4.1 ]Событие изменения статуса прослушиваются по каналу `window_screen_lock_status://change_session_status`.
 
 ## ОС
 
@@ -49,12 +51,12 @@ await listen("window_screen_lock_status://change_session_status", (result) => {
 
 ## Цели
 
-- [ ] Реализовать и проверить для Unix системе
+- [ ] Реализовать и проверить для Unix
 - [ ] Реализовать и проверить для Android
 - [ ] Реализовать и проверить для IOS
-- [ ] Проверить работоспособность для версии Tauri v2 и высшее (При условии что он станет стабильным)
+- [ ] Проверить работоспособность для версии Tauri v2 и выше (При условии что он станет стабильным)
   
-## Вклад
+## Сотрудничество
 
 PR принимаются.
 
@@ -62,18 +64,19 @@ PR принимаются.
 
 <h1 align="center" id="eng">Plugin for tracking session blocking |<a href="#rus">rus</a>|</h1>
 
-This plugin helps you control the lock status for the current session. Implemented on technologies such as WinAPI and DBUS. The current version of the plugin is suitable for `Tauri 1.5.4`.
+This plugin helps you control the lock status for the current session. The current version of the plugin is suitable for `Tauri 1.5.4`.
 
 ## Usage
 
-To work, you must first connect the plugin to the project, this can be done by adding a line to `src-tauri/Cargo.toml`:
+[ 1 ] To get started, you need to connect a plugin to the project
+[ 2 ] To do this, add to `src-tauri/Cargo.toml`:
 
 ```toml
 [dependencies]
   tauri-plugin-screen-lock-status = { git = "https://github.com/ren40/tauri-plugin-screen-lock-status" }
 ```
 
-Next we connect it in the executable file `src-tauri/src/main.rc`:
+[ 3 ] Next, in the executable file `src-tauri/src/main.rc`, we connect:
 
 ```Rust
 //main.rc
@@ -88,7 +91,7 @@ fn main() {
 }
 ```
 
-Status change events are listened to on the `window_screen_lock_status://change_session_status` channel. To listen, you need to connect the following code:
+[ 4 ] To listen, you need to connect the following code:
 
 ```JS
 import { listen } from '@tauri-apps/api/event'
@@ -97,6 +100,8 @@ await listen("window_screen_lock_status://change_session_status", (result) => {
     console.log(`[${new Date().toLocaleString()} ${result.payload}]`)
   })
 ```
+
+[ 4.1 ]The status change event is listened to via the channel `window_screen_lock_status://change_session_status'.
 
 ## OS
 
