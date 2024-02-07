@@ -9,7 +9,7 @@ readme = "README.md"
 rust-version = "1.60"
 exclude = ["/examples"]
 repository = "https://github.com/ren40/tauri-plugin-screen-lock-status"
-keywords = ["tauri", "session lock", "detect session lock"]
+keywords = ["tauri", "tauri-plugin", "detect_session_lock"]
 
 [dependencies]
 tauri = { version = "1.5.4" }
