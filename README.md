@@ -4,15 +4,15 @@
 
 ## Установка
 
-[ 1 ] Для начала работы нужно подключить в проект плагин
-[ 2 ] Для этого в `src-tauri/Cargo.toml` добавить:
+- [ 1 ] Для начала работы нужно подключить в проект плагин
+- [ 2 ] Для этого в `src-tauri/Cargo.toml` добавить:
 
 ```toml
 [dependencies]
   tauri-plugin-screen-lock-status = { git = "https://github.com/ren40/tauri-plugin-screen-lock-status" }
 ```
 
-[ 3 ] Далее в исполняемом файле `src-tauri/src/main.rc` подключаем:
+- [ 3 ] Далее в исполняемом файле `src-tauri/src/main.rc` подключаем:
 
 ```Rust
 //main.rc
@@ -27,7 +27,7 @@ fn main() {
 }
 ```
 
-[ 4 ] Для прослушивания надо подключить следующий код:
+ - [ 4 ] Для прослушивания надо подключить следующий код:
 
 ```JS
 import { listen } from '@tauri-apps/api/event'
@@ -37,7 +37,7 @@ await listen("window_screen_lock_status://change_session_status", (result) => {
   })
 ```
 
-[ 4.1 ]Событие изменения статуса прослушиваются по каналу `window_screen_lock_status://change_session_status`.
+- [ 4.1 ]Событие изменения статуса прослушиваются по каналу `window_screen_lock_status://change_session_status`.
 
 ## ОС
 
@@ -66,17 +66,17 @@ PR принимаются.
 
 This plugin helps you control the lock status for the current session. The current version of the plugin is suitable for `Tauri 1.5.4`.
 
-## Usage
+## Installation
 
-[ 1 ] To get started, you need to connect a plugin to the project
-[ 2 ] To do this, add to `src-tauri/Cargo.toml`:
+- [ 1 ] To get started, you need to connect a plugin to the project
+- [ 2 ] To do this, add to `src-tauri/Cargo.toml`:
 
 ```toml
 [dependencies]
   tauri-plugin-screen-lock-status = { git = "https://github.com/ren40/tauri-plugin-screen-lock-status" }
 ```
 
-[ 3 ] Next, in the executable file `src-tauri/src/main.rc`, we connect:
+- [ 3 ] Next, in the executable file `src-tauri/src/main.rc`, we connect:
 
 ```Rust
 //main.rc
@@ -91,7 +91,7 @@ fn main() {
 }
 ```
 
-[ 4 ] To listen, you need to connect the following code:
+- [ 4 ] To listen, you need to connect the following code:
 
 ```JS
 import { listen } from '@tauri-apps/api/event'
@@ -101,7 +101,7 @@ await listen("window_screen_lock_status://change_session_status", (result) => {
   })
 ```
 
-[ 4.1 ]The status change event is listened to via the channel `window_screen_lock_status://change_session_status'.
+- [ 4.1 ]The status change event is listened to via the channel `window_screen_lock_status://change_session_status'.
 
 ## OS
 
