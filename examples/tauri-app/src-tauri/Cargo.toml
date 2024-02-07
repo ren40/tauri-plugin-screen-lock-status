@@ -1,5 +1,5 @@
 [package]
-name = "tauri-detect-screen-lock"
+name = "tauri-plugin-screen-lock-status-example"
 version = "0.0.1"
 description = "A Tauri App"
 authors = ["ren40"]

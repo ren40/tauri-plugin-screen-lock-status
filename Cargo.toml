@@ -2,8 +2,9 @@
 name = "tauri-plugin-screen-lock-status"
 version = "0.0.1"
 authors = [ "ren40" ]
-description = ""
+description = "This plugin helps track the lock status for the current session"
 edition = "2021"
+readme = "README.md"
 rust-version = "1.60"
 exclude = ["/examples"]
 repository = "https://github.com/ren40/tauri-plugin-screen-lock-status"

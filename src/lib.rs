@@ -59,8 +59,8 @@ pub static WINDOW_TAURI: OnceLock<Window> = OnceLock::new();
 pub fn init<R: Runtime>() -> TauriPlugin<R> {
     #[cfg(target_os = "windows")]
     {
-        println!("Start new thread...");
         thread::spawn(|| unsafe {
+            println!("Start new thread...");
             let instance = GetModuleHandleA(None).unwrap();
             debug_assert!(instance.0 != 0);
 
@@ -107,15 +107,15 @@ pub fn init<R: Runtime>() -> TauriPlugin<R> {
 
                     match message.wParam.0 as u32 {
                         WTS_SESSION_LOCK => {
-                            let _ = WINDOW_TAURI.get().expect("").emit_all(
-                                "windows_screen_lock_status://change_session_status",
+                            let _ = WINDOW_TAURI.get().expect("Error get WINDOW_TAURI").emit_all(
+                                "window_screen_lock_status://change_session_status",
                                 "lock",
                             );
                             println!("Locked");
                         }
                         WTS_SESSION_UNLOCK => {
-                            let _ = WINDOW_TAURI.get().expect("").emit_all(
-                                "windows_screen_lock_status://change_session_status",
+                            let _ = WINDOW_TAURI.get().expect("Error get WINDOW_TAURI").emit_all(
+                                "window_screen_lock_status://change_session_status",
                                 "unlock",
                             );
                             println!("Unlocked");
@@ -131,6 +131,7 @@ pub fn init<R: Runtime>() -> TauriPlugin<R> {
     #[cfg(target_os = "linux")]
     {
         thread::spawn(move || {
+            println!("Start new thread...");
             let mut flg = false;
             loop {
                 let conn = Connection::system().unwrap();
@@ -150,13 +151,13 @@ pub fn init<R: Runtime>() -> TauriPlugin<R> {
                                 Some(_) => {
                                     if flg == true {
                                         let _ = window.expect("Error get WINDOW_TAURI").emit_all(
-                                            "windows_screen_lock_status://change_session_status",
+                                            "window_screen_lock_status://change_session_status",
                                             "lock",
                                         );
                                         println!("Locked");
                                     } else {
                                         let _ = window.expect("Error get WINDOW_TAURI").emit_all(
-                                            "windows_screen_lock_status://change_session_status",
+                                            "window_screen_lock_status://change_session_status",
                                             "unlock",
                                         );
                                         println!("Unlocked");
@@ -172,5 +173,5 @@ pub fn init<R: Runtime>() -> TauriPlugin<R> {
             }
         });
     }
-    Builder::new("windows_screen_lock_status").build()
+    Builder::new("window_screen_lock_status").build()
 }

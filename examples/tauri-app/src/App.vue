@@ -42,7 +42,7 @@ import { onMounted, ref } from 'vue'
 
 const msgStatus = ref(new Array<String>())
 onMounted(async () => {
-  await listen("windows_screen_lock_status://change_session_status", (result) => {
+  await listen("window_screen_lock_status://change_session_status", (result) => {
     msgStatus.value.push(`[${new Date().toLocaleString()} ${result.payload}]`)
   })
 })
