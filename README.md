@@ -45,13 +45,13 @@ await listen("window_screen_lock_status://change_session_status", (result) => {
 | ----------  | ------ |
 | Windows     |  :white_check_mark:   |
 | Linux       |  :white_check_mark:    |
-| Unix        |  :negative_squared_cross_mark:      |
+| MacOS        |  :white_check_mark:      |
 | Android     | :negative_squared_cross_mark:  |
 | IOS         | :negative_squared_cross_mark: |
 
 ## Цели
 
-- [ ] Реализовать и проверить для Unix
+- [ X ] Реализовать и проверить для MacOS
 - [ ] Реализовать и проверить для Android
 - [ ] Реализовать и проверить для IOS
 - [ ] Проверить работоспособность для версии Tauri v2 и выше (При условии что он станет стабильным)
@@ -109,13 +109,13 @@ await listen("window_screen_lock_status://change_session_status", (result) => {
 | ----------  | ------ |
 | Windows     |  :white_check_mark:   |
 | Linux       |  :white_check_mark:    |
-| Unix        |  :negative_squared_cross_mark:      |
+| MacOS        |  :white_check_mark:      |
 | Android     | :negative_squared_cross_mark:  |
 | IOS         | :negative_squared_cross_mark: |
 
 ## TODO
 
-- [ ] Implement and test for Unix system
+- [ X ] Implement and test for MacOS
 - [ ] Implement and test for Android
 - [ ] Implement and test for iOS
 - [ ] Check performance for version Tauri v2 and higher (Assuming it becomes stable)

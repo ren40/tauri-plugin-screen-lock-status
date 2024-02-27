@@ -173,5 +173,10 @@ pub fn init<R: Runtime>() -> TauriPlugin<R> {
             }
         });
     }
+
+    #[cfg(target_os = "macos")]
+    {
+        // TODO реализация для MacOS
+    }
     Builder::new("window_screen_lock_status").build()
 }
