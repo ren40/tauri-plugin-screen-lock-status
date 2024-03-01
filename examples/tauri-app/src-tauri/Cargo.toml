@@ -1,6 +1,6 @@
 [package]
 name = "tauri-plugin-screen-lock-status-example"
-version = "0.0.1"
+version = "0.0.2"
 description = "A Tauri App"
 authors = ["ren40"]
 license = ""

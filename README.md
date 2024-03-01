@@ -51,7 +51,7 @@ await listen("window_screen_lock_status://change_session_status", (result) => {
 
 ## Цели
 
-- [ X ] Реализовать и проверить для MacOS
+- [X] Реализовать и проверить для MacOS
 - [ ] Реализовать и проверить для Android
 - [ ] Реализовать и проверить для IOS
 - [ ] Проверить работоспособность для версии Tauri v2 и выше (При условии что он станет стабильным)
@@ -115,7 +115,7 @@ await listen("window_screen_lock_status://change_session_status", (result) => {
 
 ## TODO
 
-- [ X ] Implement and test for MacOS
+- [X] Implement and test for MacOS
 - [ ] Implement and test for Android
 - [ ] Implement and test for iOS
 - [ ] Check performance for version Tauri v2 and higher (Assuming it becomes stable)

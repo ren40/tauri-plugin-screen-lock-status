@@ -1,6 +1,6 @@
 [package]
 name = "tauri-plugin-screen-lock-status"
-version = "0.0.1"
+version = "0.1.2"
 authors = [ "ren40" ]
 description = "This plugin helps track the lock status for the current session"
 edition = "2021"
