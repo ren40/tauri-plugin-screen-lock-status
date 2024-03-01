@@ -1,6 +1,6 @@
 [package]
 name = "tauri-plugin-screen-lock-status"
-version = "0.0.1"
+version = "0.1.2"
 authors = [ "ren40" ]
 description = "This plugin helps track the lock status for the current session"
 edition = "2021"
@@ -13,6 +13,10 @@ keywords = ["tauri", "tauri-plugin", "detect_session_lock"]
 
 [dependencies]
 tauri = { version = "1.5.4" }
+
+[target.'cfg(target_os = "macos")'.dependencies]
+core-foundation = "0.9.4"
+core-graphics = "0.23.1"
 
 [target."cfg(linux)".dependencies]
 zbus = "3.14.1"

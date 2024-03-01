@@ -7,15 +7,19 @@ use windows::{
     Win32::Foundation::*,
     Win32::System::{
         LibraryLoader::*,
-        RemoteDesktop::{
-            WTSRegisterSessionNotification,
-            NOTIFY_FOR_ALL_SESSIONS,
-        },
+        RemoteDesktop::{WTSRegisterSessionNotification, NOTIFY_FOR_ALL_SESSIONS},
     },
     Win32::UI::Input::KeyboardAndMouse::GetActiveWindow,
     Win32::UI::WindowsAndMessaging::*,
 };
 
+#[cfg(target_os = "macos")]
+extern crate core_foundation;
+#[cfg(target_os = "macos")]
+extern crate core_graphics;
+
+#[cfg(target_os = "macos")]
+use core_foundation::{base::TCFType, base::ToVoid, string::CFString, dictionary::CFDictionary};
 
 use std::sync::OnceLock;
 use std::thread;
@@ -24,6 +28,11 @@ use tauri::{
     plugin::{Builder, TauriPlugin},
     Manager, Runtime, Window,
 };
+
+#[cfg(target_os = "macos")]
+extern "C" {
+    fn CGSessionCopyCurrentDictionary() -> core_foundation::dictionary::CFDictionaryRef;
+}
 
 //auto gen code
 #[cfg(target_os = "linux")]
@@ -107,17 +116,23 @@ pub fn init<R: Runtime>() -> TauriPlugin<R> {
 
                     match message.wParam.0 as u32 {
                         WTS_SESSION_LOCK => {
-                            let _ = WINDOW_TAURI.get().expect("Error get WINDOW_TAURI").emit_all(
-                                "window_screen_lock_status://change_session_status",
-                                "lock",
-                            );
+                            let _ = WINDOW_TAURI
+                                .get()
+                                .expect("Error get WINDOW_TAURI")
+                                .emit_all(
+                                    "window_screen_lock_status://change_session_status",
+                                    "lock",
+                                );
                             println!("Locked");
                         }
                         WTS_SESSION_UNLOCK => {
-                            let _ = WINDOW_TAURI.get().expect("Error get WINDOW_TAURI").emit_all(
-                                "window_screen_lock_status://change_session_status",
-                                "unlock",
-                            );
+                            let _ = WINDOW_TAURI
+                                .get()
+                                .expect("Error get WINDOW_TAURI")
+                                .emit_all(
+                                    "window_screen_lock_status://change_session_status",
+                                    "unlock",
+                                );
                             println!("Unlocked");
                         }
                         _ => {}
@@ -170,6 +185,52 @@ pub fn init<R: Runtime>() -> TauriPlugin<R> {
                     None => break,
                 }
                 thread::sleep(Duration::from_millis(1000));
+            }
+        });
+    }
+
+    #[cfg(target_os = "macos")]
+    {
+        thread::spawn(move || {
+            println!("Start new thread...");
+            let mut flg = false;
+            loop {
+                unsafe {
+                    let session_dictionary_ref = CGSessionCopyCurrentDictionary();
+                    let session_dictionary: CFDictionary =
+                        CFDictionary::wrap_under_create_rule(session_dictionary_ref);
+                    let mut current_session_property = false;
+                    match session_dictionary
+                        .find(CFString::new("CGSSessionScreenIsLocked").to_void())
+                    {
+                        None => current_session_property = false,
+                        Some(_) => current_session_property = true,
+                    }
+                    if flg != current_session_property {
+                        flg = current_session_property;
+                        let window = WINDOW_TAURI.get();
+
+                        match window {
+                            Some(_) => {
+                                if current_session_property == true {
+                                    let _ = window.expect("Error get WINDOW_TAURI").emit_all(
+                                        "window_screen_lock_status://change_session_status",
+                                        "lock",
+                                    );
+                                    println!("Locked");
+                                } else {
+                                    let _ = window.expect("Error get WINDOW_TAURI").emit_all(
+                                        "window_screen_lock_status://change_session_status",
+                                        "unlock",
+                                    );
+                                    println!("Unlocked");
+                                }
+                            }
+                            None => break,
+                        }
+                    }
+                    thread::sleep(Duration::from_millis(1000));
+                }
             }
         });
     }
